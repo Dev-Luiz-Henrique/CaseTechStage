@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model areas {
+  id         BigInt      @id @default(autoincrement())
+  name       String      @unique(map: "name") @db.VarChar(255)
+  created_at DateTime?   @default(now()) @db.Timestamp(0)
+  processes  processes[]
+}
+
+model processes {
+  id              BigInt         @id @default(autoincrement())
+  name            String         @db.VarChar(255)
+  description     String?        @db.Text
+  documentation   String?        @db.VarChar(255)
+  tools           String?        @db.VarChar(255)
+  area_id         BigInt
+  parent_id       BigInt?
+  created_at      DateTime?      @default(now()) @db.Timestamp(0)
+  areas           areas          @relation(fields: [area_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "processes_ibfk_1")
+  processes       processes?     @relation("processesToprocesses", fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "processes_ibfk_2")
+  other_processes processes[]    @relation("processesToprocesses")
+  responsibles    responsibles[]
+
+  @@index([area_id], map: "area_id")
+  @@index([parent_id], map: "parent_id")
+}
+
+model departments_sectors {
+  id                        BigInt                @id @default(autoincrement())
+  name                      String                @db.VarChar(255)
+  department_id             BigInt?
+  created_at                DateTime?             @default(now()) @db.Timestamp(0)
+  departments_sectors       departments_sectors?  @relation("departments_sectorsTodepartments_sectors", fields: [department_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "departments_sectors_ibfk_1")
+  other_departments_sectors departments_sectors[] @relation("departments_sectorsTodepartments_sectors")
+  responsibles              responsibles[]
+
+  @@index([department_id], map: "department_id")
+}
+
+model responsibles {
+  process_id           BigInt
+  department_sector_id BigInt
+  created_at           DateTime?           @default(now()) @db.Timestamp(0)
+  processes            processes           @relation(fields: [process_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "responsibles_ibfk_1")
+  departments_sectors  departments_sectors @relation(fields: [department_sector_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "responsibles_ibfk_2")
+
+  @@id([process_id, department_sector_id])
+  @@index([department_sector_id], map: "department_sector_id")
+}
