@@ -1,0 +1,24 @@
+@use "variables" as *;
+@use "mixins" as *;
+@use "sass:color";
+
+.button {
+    &--primary {
+        @include button-style(
+            $primary-color, #ffffff, color.adjust($primary-color, $lightness: -10%)
+        );
+    }
+
+    &--secondary {
+        @include button-style(
+            $secondary-color, $text-color, color.adjust($secondary-color, $lightness: -10%)
+        );
+    }
+
+    &--outline {
+        @include button-style( 
+            transparent, $primary-color,$primary-color, #ffffff
+        );
+        border: 2px solid $primary-color;
+    }
+}

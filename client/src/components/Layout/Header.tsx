@@ -1,4 +1,4 @@
-import Logo from "../../assets/react.svg";
+import Logo from "../../assets/images/logo.svg";
 import "./Header.scss";
 
 const Header = () => (

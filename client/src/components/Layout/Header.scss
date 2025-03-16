@@ -1,17 +1,20 @@
+@use "../../assets/styles/variables" as *;
+
 .app-header {
-    background-color: #004b8d;
-    padding: 1rem;
+    background-color: $primary-color;
+    padding: $spacing-sm $spacing-md;
     display: flex;
     align-items: center;
 
     &__logo {
-        width: 50px;
-        margin-right: 1rem;
+        width: 70px;
+        margin-right: $spacing-md;
+        filter: brightness(0) invert(1);
     }
 
     &__title {
-        font-size: 1.5rem;
-        color: #ffffff;
+        font-size: $font-size-xl;
+        color: $onprimary-color;
         font-weight: bold;
     }
 }

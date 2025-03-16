@@ -1,11 +1,13 @@
+@use "../../assets/styles/variables" as *;
+
 .app-footer {
-    background-color: #004b8d;
-    padding: 0.75rem;
+    background-color: $primary-color;
+    padding: $spacing-sm;
     text-align: center;
 
     &__text {
-        color: #ffffff;
-        font-size: 0.875rem;
+        color: $onprimary-color;
+        font-size: $font-size-sm;
         margin: 0;
     }
 }
