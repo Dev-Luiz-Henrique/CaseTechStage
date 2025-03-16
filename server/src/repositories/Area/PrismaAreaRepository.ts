@@ -5,31 +5,43 @@ import { Area } from "@/models/Area";
 const prisma = new PrismaClient();
 
 export class PrismaAreaRepository implements IAreaRepository {
-
-    async getAll(): Promise<Area[]> {
-        const areas = await prisma.areas.findMany();
-        return areas.map(area => new Area(area.id, area.name, area.created_at ?? undefined));
+    
+    private mapToArea(area: {
+        id: bigint;
+        name: string;
+        createdAt?: Date | null;
+    }): Area {
+        return new Area(
+            area.id,
+            area.name,
+            area.createdAt ?? undefined
+        );
     }
 
-    async getById(id: number): Promise<Area | null> {
-        const area = await prisma.areas.findUnique({ where: { id } });
-        return area ? new Area(area.id, area.name, area.created_at ?? undefined) : null;
+    async getAll(): Promise<Area[]> {
+        const areas = await prisma.area.findMany();
+        return areas.map(area => this.mapToArea(area));
+    }
+
+    async getById(id: bigint): Promise<Area | null> {
+        const area = await prisma.area.findUnique({ where: { id } });
+        return area ? this.mapToArea(area) : null;
     }
 
     async create(name: string): Promise<Area> {
-        const newArea = await prisma.areas.create({ data: { name } });
-        return new Area(newArea.id, newArea.name, newArea.created_at ?? undefined);
+        const newArea = await prisma.area.create({ data: { name } });
+        return this.mapToArea(newArea);
     }
 
-    async update(id: number, name: string): Promise<Area> {
-        const updatedArea = await prisma.areas.update({
+    async update(id: bigint, name: string): Promise<Area> {
+        const updatedArea = await prisma.area.update({
             where: { id },
             data: { name }
         });
-        return new Area(updatedArea.id, updatedArea.name, updatedArea.created_at ?? undefined);
+        return this.mapToArea(updatedArea);
     }
 
-    async delete(id: number): Promise<void> {
-        await prisma.areas.delete({ where: { id } });
+    async delete(id: bigint): Promise<void> {
+        await prisma.area.delete({ where: { id } });
     }
 }

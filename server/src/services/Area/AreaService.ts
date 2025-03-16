@@ -9,7 +9,7 @@ export class AreaService implements IAreaService {
         return await this.areaRepository.getAll();
     }
 
-    async getById(id: number): Promise<Area | null> {
+    async getById(id: bigint): Promise<Area | null> {
         return await this.areaRepository.getById(id);
     }
 
@@ -17,11 +17,11 @@ export class AreaService implements IAreaService {
         return await this.areaRepository.create(name);
     }
 
-    async update(id: number, name: string): Promise<Area> {
+    async update(id: bigint, name: string): Promise<Area> {
         return await this.areaRepository.update(id, name);
     }
 
-    async delete(id: number): Promise<void> {
+    async delete(id: bigint): Promise<void> {
         await this.areaRepository.delete(id);
     }
 }

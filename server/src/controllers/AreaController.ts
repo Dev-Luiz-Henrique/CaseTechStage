@@ -16,7 +16,7 @@ export class AreaController {
     getById: RequestHandler = async (req, res, next) => {
         try {
             const { id } = req.params;
-            const area = await this.areaService.getById(Number(id));
+            const area = await this.areaService.getById(BigInt(id));
             if (!area)
                 res.status(404).json({ message: "Area not found" });
             else
@@ -40,7 +40,7 @@ export class AreaController {
         try {
             const { id } = req.params;
             const { name } = req.body;
-            const updatedArea = await this.areaService.update(Number(id), name);
+            const updatedArea = await this.areaService.update(BigInt(id), name);
             res.status(200).json(updatedArea);
         } catch (error) {
             next(error);
@@ -50,7 +50,7 @@ export class AreaController {
     delete: RequestHandler = async (req, res, next) => {
         try {
             const { id } = req.params;
-            await this.areaService.delete(Number(id));
+            await this.areaService.delete(BigInt(id));
             res.status(204).send();
         } catch (error) {
             next(error);
