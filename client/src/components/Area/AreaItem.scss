@@ -1,0 +1,71 @@
+@use "sass:color";
+@use "../../assets/styles/variables" as *;
+@use "../../assets/styles/mixins" as *;
+
+.area-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-sm;
+    border-bottom: 1px solid $border-color;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &__name {
+        font-family: $font-primary;
+        font-size: $font-size-md;
+        color: $text-color;
+        font-weight: bold;
+    }
+
+    &__actions {
+        display: flex;
+        gap: $spacing-sm;
+    }
+
+    &__button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: transparent;
+        border: none;
+        padding: 0;
+        border-radius: $border-radius-sm;
+
+        &:hover {
+            filter: brightness(0.95);
+        }
+
+        img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        &--edit,
+        &--save,
+        &--delete,
+        &--cancel {
+            background-color: $secondary-color;
+            color: $onsecondary-color;
+        }
+    }
+
+    &__input {
+        @include input-style($border-color);
+        flex: 1;
+    }
+
+    &--editing {
+        justify-content: flex-start;
+        gap: $spacing-sm;
+
+        .area-item__input {
+            flex: 1;
+        }
+    }
+}

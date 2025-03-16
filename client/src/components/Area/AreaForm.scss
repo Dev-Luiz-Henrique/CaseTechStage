@@ -1,0 +1,20 @@
+@use "sass:color";
+@use "../../assets/styles/variables" as *;
+@use "../../assets/styles/mixins" as *;
+
+.area-form {
+    display: flex;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-md;
+
+    &__input {
+        flex: 1;
+        @include input-style($border-color);
+    }
+
+    &__button {
+        @include button-style($accent-color, $onprimary-color);
+        padding: $spacing-sm $spacing-md;
+        cursor: pointer;
+    }
+}

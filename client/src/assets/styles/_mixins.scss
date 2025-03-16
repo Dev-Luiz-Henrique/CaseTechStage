@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "variables" as *;
 
 @mixin flex-center {
@@ -9,7 +10,7 @@
 @mixin button-style(
     $bg-color,
     $text-color,
-    $hover-bg,
+    $hover-bg: color.adjust($bg-color, $lightness: -10%),
     $hover-text: $text-color
 ) {
     background-color: $bg-color;
@@ -27,5 +28,26 @@
     &:hover {
         background-color: $hover-bg;
         color: $hover-text;
+    }
+}
+
+@mixin input-style(
+    $border-color,
+    $background-color: $background-color,
+    $text-color: $text-color
+) {
+    padding: $spacing-sm;
+    border: 2px solid $border-color;
+    border-radius: $border-radius-md;
+    font-family: $font-primary;
+    font-size: $font-size-md;
+    color: $text-color;
+    background-color: $background-color;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+    &:focus {
+        border-color: color.adjust($border-color, $lightness: -10%);
+        box-shadow: 0 0 5px color.adjust($border-color, $lightness: -20%);
+        outline: none;
     }
 }
