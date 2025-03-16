@@ -7,4 +7,6 @@ export interface IResponsibleRepository {
     assign(processId: bigint, organizationalUnitId: bigint): Promise<Responsible>;
     
     unassign(processId: bigint, organizationalUnitId: bigint): Promise<void>;
+
+    findByProcessAndUnit(processId: bigint, organizationalUnitId: bigint): Promise<Responsible | null>;
 }

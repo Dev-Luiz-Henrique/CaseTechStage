@@ -4,7 +4,7 @@ export interface IProcessService {
 
     getAll(): Promise<Area[]>;
 
-    getById(id: bigint): Promise<Area | null>;
+    getById(id: bigint): Promise<Area>;
 
     create(data: {
         name: string;

@@ -4,7 +4,7 @@ export interface IAreaService {
 
     getAll(): Promise<Area[]>;
 
-    getById(id: bigint): Promise<Area | null>; 
+    getById(id: bigint): Promise<Area>; 
 
     create(name: string): Promise<Area>;
 

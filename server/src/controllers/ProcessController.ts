@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { IProcessService } from "@/services/Process/IProcessService";
+import { idSchema, processSchema } from "@/utils/validators";
 
 export class ProcessController {
     constructor(private processService: IProcessService) {}
@@ -15,12 +16,10 @@ export class ProcessController {
 
     getById: RequestHandler = async (req, res, next) => {
         try {
-            const { id } = req.params;
+            const { id } = idSchema.parse(req.params);
+            
             const process = await this.processService.getById(BigInt(id));
-            if (!process)
-                res.status(404).json({ message: "Process not found" });
-            else
-                res.status(200).json(process);
+            res.status(200).json(process);
         } catch (error) {
             next(error);
         }
@@ -28,14 +27,12 @@ export class ProcessController {
 
     create: RequestHandler = async (req, res, next) => {
         try {
-            const { name, description, documentation, tools, areaId, parentId } = req.body;
+            const validatedData = processSchema.parse(req.body);
+
             const newProcess = await this.processService.create({
-                name,
-                description,
-                documentation,
-                tools,
-                areaId: BigInt(areaId),
-                parentId: parentId ? BigInt(parentId) : null
+                ...validatedData,
+                areaId: BigInt(validatedData.areaId),
+                parentId: validatedData.parentId ? BigInt(validatedData.parentId) : null
             });
             res.status(201).json(newProcess);
         } catch (error) {
@@ -45,15 +42,13 @@ export class ProcessController {
 
     update: RequestHandler = async (req, res, next) => {
         try {
-            const { id } = req.params;
-            const { name, description, documentation, tools, areaId, parentId } = req.body;
+            const { id } = idSchema.parse(req.params);
+            const validatedData = processSchema.partial().parse(req.body);
+
             const updatedProcess = await this.processService.update(BigInt(id), {
-                name,
-                description,
-                documentation,
-                tools,
-                areaId: areaId ? BigInt(areaId) : undefined,
-                parentId: parentId ? BigInt(parentId) : undefined
+                ...validatedData,
+                areaId: validatedData.areaId ? BigInt(validatedData.areaId) : undefined,
+                parentId: validatedData.parentId ? BigInt(validatedData.parentId) : undefined
             });
             res.status(200).json(updatedProcess);
         } catch (error) {
@@ -63,7 +58,8 @@ export class ProcessController {
 
     delete: RequestHandler = async (req, res, next) => {
         try {
-            const { id } = req.params;
+            const { id } = idSchema.parse(req.params);
+
             await this.processService.delete(BigInt(id));
             res.status(204).send();
         } catch (error) {

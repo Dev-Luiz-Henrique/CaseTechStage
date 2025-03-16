@@ -4,7 +4,7 @@ export interface IOrganizationalUnitService {
 
     getAll(): Promise<OrganizationalUnit[]>;
 
-    getById(id: bigint): Promise<OrganizationalUnit | null>;
+    getById(id: bigint): Promise<OrganizationalUnit>;
 
     create(name: string, parentId?: bigint | null): Promise<OrganizationalUnit>;
 

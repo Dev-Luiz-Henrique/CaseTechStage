@@ -39,4 +39,9 @@ export class PrismaAreaRepository implements IAreaRepository {
     async delete(id: bigint): Promise<void> {
         await prisma.area.delete({ where: { id } });
     }
+
+    async getByName(name: string): Promise<Area | null> {
+        const area = await prisma.area.findFirst({ where: { name } });
+        return area ? mapToArea(area) : null;
+    }
 }

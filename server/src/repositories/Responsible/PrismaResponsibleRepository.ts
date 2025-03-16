@@ -30,4 +30,11 @@ export class PrismaResponsibleRepository implements IResponsibleRepository {
             where: { processId_organizationalUnitId: { processId, organizationalUnitId } }
         });
     }
+
+    async findByProcessAndUnit(processId: bigint, organizationalUnitId: bigint): Promise<Responsible | null> {
+        const responsible = await prisma.responsible.findUnique({
+            where: { processId_organizationalUnitId: { processId, organizationalUnitId } }
+        });
+        return responsible ? mapToResponsible(responsible) : null;
+    }
 }

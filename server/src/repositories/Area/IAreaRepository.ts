@@ -11,4 +11,6 @@ export interface IAreaRepository {
     update(id: bigint, name: string): Promise<Area>;
 
     delete(id: bigint): Promise<void>;
+
+    getByName(name: string): Promise<Area | null>;
 }

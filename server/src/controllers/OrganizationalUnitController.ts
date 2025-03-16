@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { IOrganizationalUnitService } from "@/services/OrganizationalUnit/IOrganizationalUnitService";
+import { idSchema, organizationalUnitSchema } from "@/utils/validators";
 
 export class OrganizationalUnitController {
     constructor(private organizationalUnitService: IOrganizationalUnitService) {}
@@ -15,12 +16,10 @@ export class OrganizationalUnitController {
 
     getById: RequestHandler = async (req, res, next) => {
         try {
-            const { id } = req.params;
+            const { id } = idSchema.parse(req.params);
+            
             const unit = await this.organizationalUnitService.getById(BigInt(id));
-            if (!unit)
-                res.status(404).json({ message: "Organizational Unit not found" });
-            else
-                res.status(200).json(unit);
+            res.status(200).json(unit);
         } catch (error) {
             next(error);
         }
@@ -28,7 +27,8 @@ export class OrganizationalUnitController {
 
     create: RequestHandler = async (req, res, next) => {
         try {
-            const { name, parentId } = req.body;
+            const { name, parentId } = organizationalUnitSchema.parse(req.body);
+
             const newUnit = await this.organizationalUnitService.create(name, parentId ? BigInt(parentId) : null);
             res.status(201).json(newUnit);
         } catch (error) {
@@ -38,8 +38,9 @@ export class OrganizationalUnitController {
 
     update: RequestHandler = async (req, res, next) => {
         try {
-            const { id } = req.params;
-            const { name, parentId } = req.body;
+            const { id } = idSchema.parse(req.params);
+            const { name, parentId } = organizationalUnitSchema.partial().parse(req.body);
+
             const updatedUnit = await this.organizationalUnitService.update(BigInt(id), name, parentId ? BigInt(parentId) : null);
             res.status(200).json(updatedUnit);
         } catch (error) {
@@ -49,7 +50,8 @@ export class OrganizationalUnitController {
 
     delete: RequestHandler = async (req, res, next) => {
         try {
-            const { id } = req.params;
+            const { id } = idSchema.parse(req.params);
+
             await this.organizationalUnitService.delete(BigInt(id));
             res.status(204).send();
         } catch (error) {
