@@ -4,33 +4,28 @@ import { Area } from "@/models/Area";
 
 const prisma = new PrismaClient();
 
+const mapToArea = (area: any): Area =>
+    new Area(
+        area.id,
+        area.name,
+        area.createdAt ?? undefined
+    );
+
 export class PrismaAreaRepository implements IAreaRepository {
     
-    private mapToArea(area: {
-        id: bigint;
-        name: string;
-        createdAt?: Date | null;
-    }): Area {
-        return new Area(
-            area.id,
-            area.name,
-            area.createdAt ?? undefined
-        );
-    }
-
     async getAll(): Promise<Area[]> {
         const areas = await prisma.area.findMany();
-        return areas.map(area => this.mapToArea(area));
+        return areas.map(mapToArea);
     }
 
     async getById(id: bigint): Promise<Area | null> {
         const area = await prisma.area.findUnique({ where: { id } });
-        return area ? this.mapToArea(area) : null;
+        return area ? mapToArea(area) : null;
     }
 
     async create(name: string): Promise<Area> {
         const newArea = await prisma.area.create({ data: { name } });
-        return this.mapToArea(newArea);
+        return mapToArea(newArea);
     }
 
     async update(id: bigint, name: string): Promise<Area> {
@@ -38,7 +33,7 @@ export class PrismaAreaRepository implements IAreaRepository {
             where: { id },
             data: { name }
         });
-        return this.mapToArea(updatedArea);
+        return mapToArea(updatedArea);
     }
 
     async delete(id: bigint): Promise<void> {
