@@ -1,6 +1,7 @@
 import { IAreaService } from "@/services/Area/IAreaService";
 import { IAreaRepository } from "@/repositories/Area/IAreaRepository";
 import { Area } from "@/models/Area";
+import { ConflictError, NotFoundError } from "@/utils/CustomErrors";
 
 export class AreaService implements IAreaService {
     constructor(private areaRepository: IAreaRepository) {}
@@ -8,14 +9,14 @@ export class AreaService implements IAreaService {
     private async getAreaOrThrow(id: bigint): Promise<Area> {
         const area = await this.areaRepository.getById(id);
         if (!area)
-            throw new Error(`Nenhuma área encontrada com o ID ${id}. Verifique se o ID está correto.`);
+            throw new NotFoundError(`Nenhuma área encontrada com o ID ${id}. Verifique se o ID está correto.`);
         return area;
     }
 
     private async validateAreaName(name: string): Promise<void> {
         const exists = await this.areaRepository.getByName(name);
         if (exists)
-            throw new Error(`Já existe uma área cadastrada com o nome '${name}'. Escolha um nome diferente.`);
+            throw new ConflictError(`Já existe uma área cadastrada com o nome '${name}'. Escolha um nome diferente.`);
     }
 
     async getAll(): Promise<Area[]> {

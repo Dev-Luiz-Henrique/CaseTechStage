@@ -3,6 +3,7 @@ import { IResponsibleRepository } from "@/repositories/Responsible/IResponsibleR
 import { IProcessService } from "@/services/Process/IProcessService";
 import { IOrganizationalUnitService } from "@/services/OrganizationalUnit/IOrganizationalUnitService";
 import { Responsible } from "@/models/Responsible";
+import { NotFoundError, ConflictError } from "@/utils/CustomErrors";
 
 export class ResponsibleService implements IResponsibleService {
     constructor(
@@ -12,18 +13,21 @@ export class ResponsibleService implements IResponsibleService {
     ) {}
 
     private async getProcessOrThrow(processId: bigint): Promise<void> {
-        if (!(await this.processService.getById(processId)))
-            throw new Error(`O processo com ID ${processId} não foi encontrado.`);
+        const process = await this.processService.getById(processId);
+        if (!process)
+            throw new NotFoundError(`O processo com ID ${processId} não foi encontrado.`);
     }
 
     private async getOrganizationalUnitOrThrow(organizationalUnitId: bigint): Promise<void> {
-        if (!(await this.organizationalUnitService.getById(organizationalUnitId)))
-            throw new Error(`A unidade organizacional com ID ${organizationalUnitId} não foi encontrada.`);
+        const unit = await this.organizationalUnitService.getById(organizationalUnitId);
+        if (!unit)
+            throw new NotFoundError(`A unidade organizacional com ID ${organizationalUnitId} não foi encontrada.`);
     }
 
     private async validateUniqueRelation(processId: bigint, organizationalUnitId: bigint): Promise<void> {
-        if (await this.responsibleRepository.findByProcessAndUnit(processId, organizationalUnitId))
-            throw new Error(`A unidade organizacional ${organizationalUnitId} já está associada ao processo ${processId}.`);
+        const relation = await this.responsibleRepository.findByProcessAndUnit(processId, organizationalUnitId);
+        if (relation)
+            throw new ConflictError(`A unidade organizacional ${organizationalUnitId} já está associada ao processo ${processId}.`);
     }
 
     async getAll(): Promise<Responsible[]> {
@@ -38,9 +42,9 @@ export class ResponsibleService implements IResponsibleService {
     }
 
     async unassign(processId: bigint, organizationalUnitId: bigint): Promise<void> {
-        if (!(await this.responsibleRepository.findByProcessAndUnit(processId, organizationalUnitId)))
-            throw new Error(`Não foi encontrada uma relação entre o processo ${processId} 
-                e a unidade organizacional ${organizationalUnitId}.`);
+        const relation = await this.responsibleRepository.findByProcessAndUnit(processId, organizationalUnitId);
+        if (!relation)
+            throw new NotFoundError(`Não foi encontrada uma relação entre o processo ${processId} e a unidade organizacional ${organizationalUnitId}.`);
         
         await this.responsibleRepository.unassign(processId, organizationalUnitId);
     }

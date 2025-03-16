@@ -1,6 +1,7 @@
 import { IProcessService } from "@/services/Process/IProcessService";
 import { IProcessRepository } from "@/repositories/Process/IProcessRepository";
 import { Process } from "@/models/Process";
+import { NotFoundError, ConflictError } from "@/utils/CustomErrors";
 
 export class ProcessService implements IProcessService {
     constructor(private processRepository: IProcessRepository) {}
@@ -8,7 +9,7 @@ export class ProcessService implements IProcessService {
     private async getProcessOrThrow(id: bigint): Promise<Process> {
         const process = await this.processRepository.getById(id);
         if (!process)
-            throw new Error(`O processo com ID ${id} não foi encontrado. Verifique se o ID está correto.`);
+            throw new NotFoundError(`O processo com ID ${id} não foi encontrado. Verifique se o ID está correto.`);
         return process;
     }
 
@@ -28,9 +29,8 @@ export class ProcessService implements IProcessService {
         areaId: bigint;
         parentId?: bigint | null;
     }): Promise<Process> {
-
         if (data.parentId && data.parentId === data.areaId)
-            throw new Error(`O processo '${data.name}' não pode ser pai de si mesmo. Escolha um processo diferente como pai.`);
+            throw new ConflictError(`O processo '${data.name}' não pode ser pai de si mesmo. Escolha um processo diferente como pai.`);
 
         return await this.processRepository.create(data);
     }
@@ -43,11 +43,10 @@ export class ProcessService implements IProcessService {
         areaId?: bigint;
         parentId?: bigint | null;
     }): Promise<Process> {
-
-        const process = await this.getProcessOrThrow(id);
+        await this.getProcessOrThrow(id);
 
         if (data.parentId && data.parentId === id)
-            throw new Error(`O processo '${data.name}' não pode ser pai de si mesmo. Escolha um processo diferente como pai.`);
+            throw new ConflictError(`O processo '${data.name || ""}' não pode ser pai de si mesmo. Escolha um processo diferente como pai.`);
 
         return await this.processRepository.update(id, data);
     }
