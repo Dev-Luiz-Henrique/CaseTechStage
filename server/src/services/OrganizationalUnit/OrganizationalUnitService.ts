@@ -22,8 +22,8 @@ export class OrganizationalUnitService implements IOrganizationalUnitService {
         
         if (parent.parentId != null)
             throw new BadRequestError("Setores só podem pertencer a departamentos. O ID informado não é um departamento válido.");
-
-        if (parent.parentId === currentId)
+ 
+        if (currentId != null && parent.id === currentId)
             throw new ConflictError("Não é possível criar um ciclo hierárquico: o departamento informado já pertence a esta hierarquia.");
     }
 
