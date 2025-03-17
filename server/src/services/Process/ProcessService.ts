@@ -1,4 +1,7 @@
-import { IProcessService } from "@/services/Process/IProcessService";
+import {
+    IProcessService,
+    ProcessBaseData,
+} from "@/services/Process/IProcessService";
 import { IProcessRepository } from "@/repositories/Process/IProcessRepository";
 import { Process } from "@/models/Process";
 import { NotFoundError, ConflictError } from "@/utils/CustomErrors";
@@ -13,42 +16,37 @@ export class ProcessService implements IProcessService {
         return process;
     }
 
+    private validateParentRelation( name: string,parentId?: bigint | null, currentId?: bigint ): void {
+        if (parentId && parentId === currentId)
+            throw new ConflictError(`O processo '${name}' não pode ser pai de si mesmo. Escolha um processo diferente como pai.`);
+    }
+
+    private async validateParentExists(parentId?: bigint | null): Promise<void> {
+        if (parentId) await this.getProcessOrThrow(parentId);
+    }
+
     async getAll(): Promise<Process[]> {
-        return await this.processRepository.getAll();
+        return this.processRepository.getAll();
     }
 
     async getById(id: bigint): Promise<Process> {
-        return await this.getProcessOrThrow(id);
+        return this.getProcessOrThrow(id);
     }
 
-    async create(data: {
-        name: string;
-        description?: string;
-        documentation?: string;
-        tools?: string;
-        areaId: bigint;
-        parentId?: bigint | null;
-    }): Promise<Process> {
-        if (data.parentId && data.parentId === data.areaId)
-            throw new ConflictError(`O processo '${data.name}' não pode ser pai de si mesmo. Escolha um processo diferente como pai.`);
-
-        return await this.processRepository.create(data);
+    async create(data: ProcessBaseData): Promise<Process> {
+        await this.validateParentExists(data.parentId);
+        this.validateParentRelation(data.name, data.parentId, data.areaId);
+        return this.processRepository.create(data);
     }
 
-    async update(id: bigint, data: {
-        name?: string;
-        description?: string;
-        documentation?: string;
-        tools?: string;
-        areaId?: bigint;
-        parentId?: bigint | null;
-    }): Promise<Process> {
+    async update(id: bigint, data: Partial<ProcessBaseData>): Promise<Process> {
         await this.getProcessOrThrow(id);
 
-        if (data.parentId && data.parentId === id)
-            throw new ConflictError(`O processo '${data.name || ""}' não pode ser pai de si mesmo. Escolha um processo diferente como pai.`);
-
-        return await this.processRepository.update(id, data);
+        if (data.parentId !== undefined)
+            await this.validateParentExists(data.parentId);
+        
+        this.validateParentRelation(data.name || "", data.parentId, id);
+        return this.processRepository.update(id, data);
     }
 
     async delete(id: bigint): Promise<void> {

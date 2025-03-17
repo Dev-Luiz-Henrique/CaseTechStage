@@ -24,7 +24,12 @@ export const processSchema = z.object({
     documentation: z.string().optional(),
     tools: z.string().optional(),
     areaId: idSchema.shape.id,
-    parentId: idSchema.shape.id.optional().nullable()
+    parentId: idSchema.shape.id.optional().nullable(),
+    status: z.enum(["Ativo", "Em Desenvolvimento", "Descontinuado"]).optional(),
+    priority: z.enum(["Alta", "Media", "Baixa"]).optional(),
+    type: z.enum(["Sistemico", "Manual"]).optional(),
+    startDate: z.string().optional(), 
+    endDate: z.string().optional()
 });
 
 export const responsibleSchema = z.object({

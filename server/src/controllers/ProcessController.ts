@@ -17,7 +17,6 @@ export class ProcessController {
     getById: RequestHandler = async (req, res, next) => {
         try {
             const { id } = idSchema.parse(req.params);
-            
             const process = await this.processService.getById(BigInt(id));
             res.status(200).json(process);
         } catch (error) {
@@ -28,11 +27,13 @@ export class ProcessController {
     create: RequestHandler = async (req, res, next) => {
         try {
             const validatedData = processSchema.parse(req.body);
-
+            
             const newProcess = await this.processService.create({
                 ...validatedData,
                 areaId: BigInt(validatedData.areaId),
-                parentId: validatedData.parentId ? BigInt(validatedData.parentId) : null
+                parentId: validatedData.parentId ? BigInt(validatedData.parentId) : null,
+                startDate: validatedData.startDate ? new Date(validatedData.startDate) : undefined,
+                endDate: validatedData.endDate ? new Date(validatedData.endDate) : undefined
             });
             res.status(201).json(newProcess);
         } catch (error) {
@@ -44,11 +45,13 @@ export class ProcessController {
         try {
             const { id } = idSchema.parse(req.params);
             const validatedData = processSchema.partial().parse(req.body);
-
+            
             const updatedProcess = await this.processService.update(BigInt(id), {
                 ...validatedData,
                 areaId: validatedData.areaId ? BigInt(validatedData.areaId) : undefined,
-                parentId: validatedData.parentId ? BigInt(validatedData.parentId) : undefined
+                parentId: validatedData.parentId ? BigInt(validatedData.parentId) : undefined,
+                startDate: validatedData.startDate ? new Date(validatedData.startDate) : undefined,
+                endDate: validatedData.endDate ? new Date(validatedData.endDate) : undefined
             });
             res.status(200).json(updatedProcess);
         } catch (error) {
@@ -59,7 +62,6 @@ export class ProcessController {
     delete: RequestHandler = async (req, res, next) => {
         try {
             const { id } = idSchema.parse(req.params);
-
             await this.processService.delete(BigInt(id));
             res.status(204).send();
         } catch (error) {

@@ -1,28 +1,27 @@
-import { Area } from "@/models/Area";
+import { Process, ProcessStatus, ProcessPriority, ProcessType } from "@/models/Process";
+
+export type ProcessBaseData = {
+    name: string;
+    description?: string | null;
+    documentation?: string | null;
+    tools?: string | null;
+    areaId: bigint;
+    parentId?: bigint | null;
+    status?: ProcessStatus;
+    priority?: ProcessPriority;
+    type?: ProcessType;
+    startDate?: Date;
+    endDate?: Date;
+};
 
 export interface IProcessService {
+    getAll(): Promise<Process[]>;
 
-    getAll(): Promise<Area[]>;
+    getById(id: bigint): Promise<Process | null>;
 
-    getById(id: bigint): Promise<Area>;
+    create(data: ProcessBaseData): Promise<Process>;
 
-    create(data: {
-        name: string;
-        description?: string;
-        documentation?: string;
-        tools?: string;
-        areaId: bigint;
-        parentId?: bigint | null;
-    }): Promise<Area>;
-
-    update(id: bigint, data: {
-        name?: string;
-        description?: string;
-        documentation?: string;
-        tools?: string;
-        areaId?: bigint;
-        parentId?: bigint | null;
-    }): Promise<Area>;
+    update(id: bigint, data: Partial<ProcessBaseData>): Promise<Process>;
 
     delete(id: bigint): Promise<void>;
 }

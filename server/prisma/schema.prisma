@@ -18,17 +18,22 @@ model Area {
 }
 
 model Process {
-  id            BigInt        @id @default(autoincrement())
-  name          String        @db.VarChar(255)
-  description   String?       @db.Text
-  documentation String?       @db.VarChar(255)
-  tools         String?       @db.VarChar(255)
-  areaId        BigInt        @map("area_id")
-  parentId      BigInt?       @map("parent_id")
-  createdAt     DateTime?     @default(now()) @map("created_at") @db.Timestamp(0)
-  area          Area          @relation(fields: [areaId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "processes_ibfk_1")
-  parent        Process?      @relation("ProcessToProcess", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "processes_ibfk_2")
-  children      Process[]     @relation("ProcessToProcess")
+  id            BigInt            @id @default(autoincrement())
+  name          String            @db.VarChar(255)
+  description   String?           @db.Text
+  documentation String?           @db.Text
+  tools         String?           @db.Text
+  areaId        BigInt            @map("area_id")
+  parentId      BigInt?           @map("parent_id")
+  status        process_status?   @default(Ativo)
+  priority      process_priority? @default(Media)
+  type          process_type?     @default(Manual)
+  startDate     DateTime?         @map("start_date") @db.Date
+  endDate       DateTime?         @map("end_date") @db.Date
+  createdAt     DateTime?         @default(now()) @map("created_at") @db.Timestamp(0)
+  area          Area              @relation(fields: [areaId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "process_ibfk_1")
+  parent        Process?          @relation("ProcessToProcess", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "process_ibfk_2")
+  children      Process[]         @relation("ProcessToProcess")
   responsibles  Responsible[]
 
   @@index([areaId], map: "area_id")
@@ -40,7 +45,7 @@ model Responsible {
   processId            BigInt             @map("process_id")
   organizationalUnitId BigInt             @map("organizational_unit_id")
   createdAt            DateTime?          @default(now()) @map("created_at") @db.Timestamp(0)
-  process              Process            @relation(fields: [processId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "responsibles_ibfk_1")
+  process              Process            @relation(fields: [processId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "responsible_ibfk_1")
   organizationalUnit   OrganizationalUnit @relation(fields: [organizationalUnitId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "responsible_ibfk_2")
 
   @@id([processId, organizationalUnitId])
@@ -59,4 +64,21 @@ model OrganizationalUnit {
 
   @@index([parentId], map: "parent_id")
   @@map("organizational_unit")
+}
+
+enum process_status {
+  Ativo
+  Em_Desenvolvimento @map("Em Desenvolvimento")
+  Descontinuado
+}
+
+enum process_priority {
+  Alta
+  Media
+  Baixa
+}
+
+enum process_type {
+  Sistemico
+  Manual
 }
