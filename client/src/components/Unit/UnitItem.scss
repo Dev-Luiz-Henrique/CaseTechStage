@@ -1,0 +1,110 @@
+@use "sass:color";
+@use "../../assets/styles/variables" as *;
+@use "../../assets/styles/mixins" as *;
+
+.unit-item {
+    padding: $spacing-sm;
+    border-bottom: 1px solid $border-color;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &__content {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        flex-wrap: nowrap;
+    }
+
+    // Colunas com larguras fixas
+    &__col {
+        padding: 0 $spacing-sm;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        &--name {
+            flex-basis: 40%;
+        }
+        &--type {
+            flex-basis: 30%;
+        }
+        &--responsible {
+            flex-basis: 30%;
+        }
+    }
+
+    &__input,
+    &__select {
+        @include input-style($border-color);
+        width: 100%;
+        box-sizing: border-box;
+        padding: $spacing-sm;
+    }
+
+    &__select {
+        font-size: $font-size-sm;
+        border-radius: $border-radius-sm;
+        background-color: $background-color;
+        color: $text-color;
+
+        &:focus {
+            outline: none;
+            border-color: $primary-color;
+        }
+    }
+
+    // Nome
+    &__name {
+        font-family: $font-primary;
+        font-size: $font-size-md;
+        color: $text-color;
+        font-weight: bold;
+    }
+
+    // Responsável
+    &__responsible {
+        font-size: $font-size-sm;
+        color: $text-color;
+    }
+
+    // Botoes
+    &__actions {
+        display: flex;
+        gap: $spacing-sm;
+        margin-left: auto;
+    }
+
+    &__button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: transparent;
+        border: none;
+        padding: 0;
+        border-radius: $border-radius-sm;
+        cursor: pointer;
+        transition: filter 0.2s;
+
+        &:hover {
+            filter: brightness(0.95);
+        }
+
+        img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        &--edit,
+        &--save,
+        &--delete,
+        &--cancel {
+            background-color: $secondary-color;
+            color: $onsecondary-color;
+        }
+    }
+}

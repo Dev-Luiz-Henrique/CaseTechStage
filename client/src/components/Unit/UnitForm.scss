@@ -1,0 +1,55 @@
+@use "sass:color";
+@use "../../assets/styles/variables" as *;
+@use "../../assets/styles/mixins" as *;
+
+.unit-form {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-md;
+
+    // Nome
+    &__input {
+        @include input-style($border-color);
+        padding: $spacing-sm;
+        width: 39%;
+    }
+
+    // Tipo (Departamento ou Setor)
+    &__type {
+        display: flex;
+        align-items: center;
+        width: 12%;
+
+        &-select {
+            @include input-style($border-color);
+            padding: $spacing-sm;
+            width: 100%;
+        }
+    }
+
+    // Departamento responsavel
+    &__department {
+        &-select {
+            @include input-style($border-color);
+            padding: $spacing-sm;
+            width: 39%;
+
+            &:disabled {
+                background-color: color.adjust(
+                    $background-accent-color,
+                    $lightness: -10%
+                );
+                color: color.adjust($text-color, $lightness: 40%);
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    // Botao Adicionar
+    &__button {
+        @include button-style($accent-color, $onprimary-color);
+        padding: $spacing-sm $spacing-md;
+        cursor: pointer;
+    }
+}

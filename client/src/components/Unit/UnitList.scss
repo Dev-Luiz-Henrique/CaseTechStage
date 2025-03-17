@@ -1,0 +1,17 @@
+@use "sass:color";
+@use "../../assets/styles/variables" as *;
+@use "../../assets/styles/mixins" as *;
+
+.unit-list {
+    background-color: $background-color;
+    padding: $spacing-md;
+    border-radius: $border-radius-md;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    &__empty {
+        text-align: center;
+        font-style: italic;
+        color: $text-color;
+        margin: $spacing-md 0;
+    }
+}

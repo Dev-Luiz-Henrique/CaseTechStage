@@ -19,8 +19,8 @@ export class OrganizationalUnitService implements IOrganizationalUnitService {
         const parent = await this.organizationalUnitRepository.getById(parentId);
         if (!parent)
             throw new NotFoundError(`O departamento responsável com ID ${parentId} não foi encontrado.`);
-
-        if (parent.parentId !== null)
+        
+        if (parent.parentId != null)
             throw new BadRequestError("Setores só podem pertencer a departamentos. O ID informado não é um departamento válido.");
 
         if (parent.parentId === currentId)
@@ -45,7 +45,7 @@ export class OrganizationalUnitService implements IOrganizationalUnitService {
 
     async update(id: bigint, name?: string, parentId?: bigint | null): Promise<OrganizationalUnit> {
         const organizationalUnit = await this.getOrganizationalUnitOrThrow(id);
-        const isDepartment = organizationalUnit.parentId === null;
+        const isDepartment = organizationalUnit.parentId == null;  
 
         if (isDepartment && parentId)
             throw new ConflictError("Não é possível transformar um departamento em setor. Crie um setor separadamente.");

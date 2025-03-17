@@ -1,6 +1,12 @@
 import { useEffect, useState, useCallback } from "react";
 import { Area } from "../types/Area";
-import { getAreas, getAreaById, createArea, updateArea, deleteArea } from "../services/areaService";
+import {
+    getAreas,
+    getAreaById,
+    createArea,
+    updateArea,
+    deleteArea,
+} from "../services/areaService";
 
 export const useArea = () => {
     const [areas, setAreas] = useState<Area[]>([]);
@@ -37,35 +43,54 @@ export const useArea = () => {
         }
     }, []);
 
-    const addArea = useCallback(async (newArea: Omit<Area, "id" | "createdAt">) => {
-        setError(null);
-        try {
-            const createdArea = await createArea(newArea);
-            setAreas(prevAreas => [...prevAreas, createdArea]);
-        } catch (err) {
-            setError((err as Error).message);
-        }
-    }, []);
+    const addArea = useCallback(
+        async (newArea: Omit<Area, "id" | "createdAt">) => {
+            setError(null);
+            try {
+                const createdArea = await createArea(newArea);
+                setAreas((prevAreas) => [...prevAreas, createdArea]);
+            } catch (err) {
+                setError((err as Error).message);
+            }
+        },
+        []
+    );
 
-    const editArea = useCallback(async (id: string, updatedData: Partial<Area>) => {
-        setError(null);
-        try {
-            const updatedArea = await updateArea(id, updatedData);
-            setAreas(prevAreas => prevAreas.map(area => (area.id === id ? updatedArea : area)));
-        } catch (err) {
-            setError((err as Error).message);
-        }
-    }, []);
+    const editArea = useCallback(
+        async (id: string, updatedData: Partial<Area>) => {
+            setError(null);
+            try {
+                const updatedArea = await updateArea(id, updatedData);
+                setAreas((prevAreas) =>
+                    prevAreas.map((area) =>
+                        area.id === id ? updatedArea : area
+                    )
+                );
+            } catch (err) {
+                setError((err as Error).message);
+            }
+        },
+        []
+    );
 
     const removeArea = useCallback(async (id: string) => {
         setError(null);
         try {
             await deleteArea(id);
-            setAreas(prevAreas => prevAreas.filter(area => area.id !== id));
+            setAreas((prevAreas) => prevAreas.filter((area) => area.id !== id));
         } catch (err) {
             setError((err as Error).message);
         }
     }, []);
 
-    return { areas, loading, error, fetchAreas, fetchAreaById, addArea, editArea, removeArea };
+    return {
+        areas,
+        loading,
+        error,
+        fetchAreas,
+        fetchAreaById,
+        addArea,
+        editArea,
+        removeArea,
+    };
 };
