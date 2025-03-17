@@ -13,19 +13,18 @@ export class OrganizationalUnitService implements IOrganizationalUnitService {
         return organizationalUnit;
     }
 
-    private async validateParent(parentId: bigint, currentId: bigint | null): Promise<void> {
-        if (parentId === currentId)
-            throw new BadRequestError("A unidade organizacional não pode ser seu próprio responsável. Escolha um responsável diferente.");
+    private async validateParent(parentId?: bigint | null, currentId?: bigint | null): Promise<void> {
+        if (!parentId) return; 
 
         const parent = await this.organizationalUnitRepository.getById(parentId);
         if (!parent)
-            throw new NotFoundError(`O departamento responsável com ID ${parentId} não foi encontrado. Confirme se ele existe antes de atribuí-lo.`);
+            throw new NotFoundError(`O departamento responsável com ID ${parentId} não foi encontrado.`);
+
+        if (parent.parentId !== null)
+            throw new BadRequestError("Setores só podem pertencer a departamentos. O ID informado não é um departamento válido.");
 
         if (parent.parentId === currentId)
             throw new ConflictError("Não é possível criar um ciclo hierárquico: o departamento informado já pertence a esta hierarquia.");
-
-        if (parent.parentId)
-            throw new ConflictError("Setores não podem ser responsáveis por outros setores ou departamentos. Verifique as regras de atribuição.");
     }
 
     async getAll(): Promise<OrganizationalUnit[]> {
@@ -37,18 +36,24 @@ export class OrganizationalUnitService implements IOrganizationalUnitService {
     }
 
     async create(name: string, parentId?: bigint | null): Promise<OrganizationalUnit> {
-        if (parentId) 
-            await this.validateParent(parentId, null);
+        if (!parentId)
+            return await this.organizationalUnitRepository.create(name, null); // Departamento
 
-        return await this.organizationalUnitRepository.create(name, parentId);
+        await this.validateParent(parentId);
+        return await this.organizationalUnitRepository.create(name, parentId); // Setor
     }
 
     async update(id: bigint, name?: string, parentId?: bigint | null): Promise<OrganizationalUnit> {
-        await this.getOrganizationalUnitOrThrow(id);
+        const organizationalUnit = await this.getOrganizationalUnitOrThrow(id);
+        const isDepartment = organizationalUnit.parentId === null;
 
-        if (parentId)
-            await this.validateParent(parentId, id);
+        if (isDepartment && parentId)
+            throw new ConflictError("Não é possível transformar um departamento em setor. Crie um setor separadamente.");
 
+        if (!isDepartment && parentId === null) 
+            throw new ConflictError("Setores não podem virar departamentos. Sempre precisam estar vinculados a um departamento.");
+
+        await this.validateParent(parentId, id);
         return await this.organizationalUnitRepository.update(id, name, parentId);
     }
 

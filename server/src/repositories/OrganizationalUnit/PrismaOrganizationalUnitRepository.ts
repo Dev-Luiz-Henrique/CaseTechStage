@@ -15,9 +15,18 @@ const mapToOrganizationalUnit = (unit: PrismaOrganizationalUnit): Organizational
 export class PrismaOrganizationalUnitRepository implements IOrganizationalUnitRepository {
     
     async getAll(): Promise<OrganizationalUnit[]> {
-        const units = await prisma.organizationalUnit.findMany();
-        return units.map(mapToOrganizationalUnit);
+        const units = await prisma.organizationalUnit.findMany({
+            include: { parent: true }
+        });
+        return units.map(unit => {
+            const enrichedUnit = mapToOrganizationalUnit(unit);
+            if (unit.parent) 
+                (enrichedUnit as any).parentName = unit.parent.name;
+    
+            return enrichedUnit;
+        });
     }
+    
 
     async getById(id: bigint): Promise<OrganizationalUnit | null> {
         const unit = await prisma.organizationalUnit.findUnique({ where: { id } });
