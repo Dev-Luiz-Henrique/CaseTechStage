@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Area {
-  id        BigInt    @id @default(autoincrement())
+  id        BigInt    @id @default(autoincrement()) @map("id")
   name      String    @unique(map: "name") @map("name") @db.VarChar(255)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
   processes Process[]
@@ -18,16 +18,16 @@ model Area {
 }
 
 model Process {
-  id            BigInt            @id @default(autoincrement())
-  name          String            @db.VarChar(255)
-  description   String?           @db.Text
-  documentation String?           @db.Text
-  tools         String?           @db.Text
+  id            BigInt            @id @default(autoincrement()) @map("id")
+  name          String            @map("name") @db.VarChar(255)
+  description   String?           @map("description") @db.Text
+  documentation String?           @map("documentation") @db.Text
+  tools         String?           @map("tools") @db.Text
   areaId        BigInt            @map("area_id")
   parentId      BigInt?           @map("parent_id")
-  status        process_status?   @default(Ativo)
-  priority      process_priority? @default(Media)
-  type          process_type?     @default(Manual)
+  status        process_status?   @default(Planejado) @map("status")
+  priority      process_priority? @default(Media) @map("priority")
+  type          process_type?     @default(Manual) @map("type")
   startDate     DateTime?         @map("start_date") @db.Date
   endDate       DateTime?         @map("end_date") @db.Date
   createdAt     DateTime?         @default(now()) @map("created_at") @db.Timestamp(0)
@@ -54,8 +54,8 @@ model Responsible {
 }
 
 model OrganizationalUnit {
-  id           BigInt               @id @default(autoincrement())
-  name         String               @db.VarChar(255)
+  id           BigInt               @id @default(autoincrement()) @map("id")
+  name         String               @map("name") @db.VarChar(255)
   parentId     BigInt?              @map("parent_id")
   createdAt    DateTime?            @default(now()) @map("created_at") @db.Timestamp(0)
   parent       OrganizationalUnit?  @relation("OrgUnitHierarchy", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "organizational_unit_ibfk_1")
@@ -64,12 +64,6 @@ model OrganizationalUnit {
 
   @@index([parentId], map: "parent_id")
   @@map("organizational_unit")
-}
-
-enum process_status {
-  Ativo
-  Em_Desenvolvimento @map("Em Desenvolvimento")
-  Descontinuado
 }
 
 enum process_priority {
@@ -81,4 +75,11 @@ enum process_priority {
 enum process_type {
   Sistemico
   Manual
+}
+
+enum process_status {
+  Planejado
+  Em_Andamento
+  Concluido
+  Cancelado
 }

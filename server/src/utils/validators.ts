@@ -1,3 +1,4 @@
+import { PROCESS_PRIORITY_VALUES, PROCESS_STATUS_VALUES, PROCESS_TYPE_VALUES } from "@/models/Process";
 import { z } from "zod";
 
 export const idSchema = z.object({
@@ -25,9 +26,9 @@ export const processSchema = z.object({
     tools: z.string().optional(),
     areaId: idSchema.shape.id,
     parentId: idSchema.shape.id.optional().nullable(),
-    status: z.enum(["Ativo", "Em Desenvolvimento", "Descontinuado"]).optional(),
-    priority: z.enum(["Alta", "Media", "Baixa"]).optional(),
-    type: z.enum(["Sistemico", "Manual"]).optional(),
+    status: z.enum(PROCESS_STATUS_VALUES).optional(),
+    priority: z.enum(PROCESS_PRIORITY_VALUES).optional(),
+    type: z.enum(PROCESS_TYPE_VALUES).optional(),
     startDate: z.string().optional(), 
     endDate: z.string().optional()
 });

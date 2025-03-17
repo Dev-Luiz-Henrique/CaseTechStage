@@ -7,9 +7,9 @@ export class Process {
         public documentation?: string,
         public tools?: string,
         public parentId?: bigint | null,
-        public status?: string,     
-        public priority?: string,   
-        public type?: string,
+        public status?: ProcessStatus,
+        public priority?: ProcessPriority,
+        public type?: ProcessType,
         public startDate?: Date,
         public endDate?: Date,
         public createdAt?: Date
@@ -34,6 +34,11 @@ export class Process {
     }
 }
 
-export type ProcessStatus = "Ativo" | "Em Desenvolvimento" | "Descontinuado";
-export type ProcessPriority = "Alta" | "Media" | "Baixa";
-export type ProcessType = "Sistemico" | "Manual";
+export const PROCESS_STATUS_VALUES = ["Ativo", "Em Desenvolvimento", "Descontinuado"] as const;
+export type ProcessStatus = (typeof PROCESS_STATUS_VALUES)[number];
+
+export const PROCESS_PRIORITY_VALUES = ["Alta", "Media", "Baixa"] as const;
+export type ProcessPriority = (typeof PROCESS_PRIORITY_VALUES)[number];
+
+export const PROCESS_TYPE_VALUES = ["Sistemico", "Manual"] as const;
+export type ProcessType = (typeof PROCESS_TYPE_VALUES)[number];
