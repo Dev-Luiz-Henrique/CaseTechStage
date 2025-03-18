@@ -1,17 +1,19 @@
 import { useState } from "react";
 import "./AreaForm.scss";
+import { Area } from "../../types/Area";
 
 interface AreaFormProps {
-    onAddArea: (name: string) => void;
+    onAddArea: (name: string) => Promise<Area | undefined>;
 }
 
 const AreaForm = ({ onAddArea }: AreaFormProps) => {
     const [newAreaName, setNewAreaName] = useState("");
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!newAreaName.trim()) return;
-        onAddArea(newAreaName);
-        setNewAreaName("");
+        const result = await onAddArea(newAreaName);
+        if (result)
+            setNewAreaName("");
     };
 
     return (

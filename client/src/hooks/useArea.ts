@@ -44,12 +44,12 @@ export const useArea = () => {
         }
     }, []);
 
-    const addArea = useCallback(
-        async (newArea: Omit<Area, "id" | "createdAt">) => {
+    const addArea = useCallback(async (newArea: Omit<Area, "id" | "createdAt">) => {
             setError(null);
             try {
                 const createdArea = await createArea(newArea);
                 setAreas((prevAreas) => [...prevAreas, createdArea]);
+                return createdArea;
             } catch (err) {
                 setError(extractErrorMessage(err));
             }
@@ -57,8 +57,7 @@ export const useArea = () => {
         []
     );
 
-    const editArea = useCallback(
-        async (id: string, updatedData: Partial<Area>) => {
+    const editArea = useCallback(async (id: string, updatedData: Partial<Area>) => {
             setError(null);
             try {
                 const updatedArea = await updateArea(id, updatedData);
