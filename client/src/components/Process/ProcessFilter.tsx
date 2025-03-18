@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useOrganizationalUnit } from "../../hooks/useOrganizationalUnit";
 import "./ProcessFilter.scss";
+import { useArea } from "../../hooks/useArea";
 
 export interface Filters {
     name: string;
@@ -10,6 +11,7 @@ export interface Filters {
     endDate: string;
     type: string;
     status: string;
+    area: string;
 }
 
 interface FilterProps {
@@ -25,9 +27,11 @@ const ProcessFilter = ({ onFilterChange }: FilterProps) => {
         endDate: "",
         type: "",
         status: "",
+        area: ""
     });
 
     const { units, loading: unitsLoading, error: unitsError } = useOrganizationalUnit();
+    const { areas, loading: areasLoading, error: areasError } = useArea();
 
     const handleChange = (field: keyof Filters, value: string) => {
         const updatedFilters = { ...filters, [field]: value };
@@ -45,6 +49,21 @@ const ProcessFilter = ({ onFilterChange }: FilterProps) => {
                 value={filters.name}
                 onChange={(e) => handleChange("name", e.target.value)}
             />
+
+            {/* Area */}
+            <select
+                value={filters.area}
+                onChange={(e) => handleChange("area", e.target.value)}
+            >
+                <option value=''>Todas Áreas</option>
+                {areasLoading && <option disabled>Carregando...</option>}
+                {areasError && <option disabled>Erro ao carregar</option>}
+                {areas.map((area) => (
+                    <option key={area.id} value={area.id}>
+                        {area.name}
+                    </option>
+                ))}
+            </select>
 
             {/* Responsavel (Unidade Organizacional) */}
             <select

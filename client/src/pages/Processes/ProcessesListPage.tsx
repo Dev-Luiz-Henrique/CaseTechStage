@@ -15,6 +15,7 @@ const ProcessesPage = () => {
         endDate: "",
         type: "",
         status: "",
+        area: "",
     });
 
     // Funcao recursiva para filtrar a arvore completa
@@ -44,17 +45,23 @@ const ProcessesPage = () => {
             const matchesType = filters.type
                 ? node.type === filters.type
                 : true;
+                
             const matchesStatus = filters.status
                 ? node.status === filters.status
                 : true;
 
+            const matchesArea = filters.area
+                ? node.areaId === filters.area
+                : true;
+            
             const matchesSelf =
                 matchesName &&
                 matchesResponsible &&
                 matchesPriority &&
                 matchesStartDate &&
                 matchesType &&
-                matchesStatus;
+                matchesStatus &&
+                matchesArea;
 
             // Aplica filtragem recursivamente nos filhos (se existirem)
             let filteredChildren = [];
