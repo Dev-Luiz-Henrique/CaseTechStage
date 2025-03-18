@@ -19,16 +19,16 @@ const ProcessForm = ({
     areas,
     parentProcesses,
 }: ProcessFormProps) => {
-    
+
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [documentation, setDocumentation] = useState("");
     const [tools, setTools] = useState("");
     const [areaId, setAreaId] = useState("");
     const [parentId, setParentId] = useState("");
-    const [status, setStatus] = useState("Planejado");
-    const [priority, setPriority] = useState("Media");
-    const [type, setType] = useState("Manual");
+    const [status, setStatus] = useState("");
+    const [priority, setPriority] = useState("");
+    const [type, setType] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
 
@@ -55,9 +55,32 @@ const ProcessForm = ({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!name.trim()) return;
+        if (!name.trim()) {
+            alert("O nome do processo é obrigatório.");
+            return;
+        }
+        if (!areaId) {
+            alert("Por favor, selecione uma Área do Projeto.");
+            return;
+        }
+        if (!status) {
+            alert("Por favor, selecione um Status.");
+            return;
+        }
+        if (!priority) {
+            alert("Por favor, selecione uma Prioridade.");
+            return;
+        }
+        if (!type) {
+            alert("Por favor, selecione um Tipo.");
+            return;
+        }
+        if (!startDate) {
+            alert("A Data de Início é obrigatória.");
+            return;
+        }
 
-        // Mapeia os responsáveis selecionados para os objetos completos
+        // Mapeia os responsaveis selecionados para os objetos completos
         const selectedResponsibles = organizationalUnits.filter((unit) =>
             responsibles.includes(unit.id)
         );
@@ -89,9 +112,9 @@ const ProcessForm = ({
             setTools("");
             setAreaId("");
             setParentId("");
-            setStatus("Planejado");
-            setPriority("Media");
-            setType("Manual");
+            setStatus("");
+            setPriority("");
+            setType("");
             setStartDate("");
             setEndDate("");
             setResponsibles([]);
@@ -122,7 +145,7 @@ const ProcessForm = ({
                 ></textarea>
             </div>
 
-            {/* Documentação e Ferramentas */}
+            {/* Documentacao e Ferramentas */}
             <div className='process-form__row process-form__row--inline'>
                 <textarea
                     className='process-form__textarea'
@@ -145,7 +168,7 @@ const ProcessForm = ({
                     value={areaId}
                     onChange={(e) => setAreaId(e.target.value)}
                 >
-                    <option value=''>Selecione a Área do Projeto</option>
+                    <option value='' disabled>Selecione a Área do Projeto</option>
                     {areas.map((area) => (
                         <option key={area.id} value={area.id}>
                             {area.name}
@@ -175,8 +198,9 @@ const ProcessForm = ({
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
                 >
+                    <option value='' disabled>Selecione o Status</option>
                     <option value='Planejado'>Planejado</option>
-                    <option value='Em_Desenvolvimento'>Em Desenvolvimento</option>
+                    <option value='Em_Andamento'>Em Andamento</option>
                     <option value='Concluido'>Concluído</option>
                     <option value='Cancelado'>Cancelado</option>
                 </select>
@@ -185,6 +209,7 @@ const ProcessForm = ({
                     value={priority}
                     onChange={(e) => setPriority(e.target.value)}
                 >
+                    <option value='' disabled>Selecione a Prioridade</option>
                     <option value='Alta'>Alta</option>
                     <option value='Media'>Média</option>
                     <option value='Baixa'>Baixa</option>
@@ -194,6 +219,7 @@ const ProcessForm = ({
                     value={type}
                     onChange={(e) => setType(e.target.value)}
                 >
+                    <option value='' disabled>Selecione o Tipo</option>
                     <option value='Sistemico'>Sistêmico</option>
                     <option value='Manual'>Manual</option>
                 </select>
