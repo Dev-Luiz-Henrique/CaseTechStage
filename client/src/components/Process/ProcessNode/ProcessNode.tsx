@@ -20,7 +20,7 @@ const ProcessTreeNode = ({ node, onRemoveProcess }: ProcessTreeNodeProps) => {
     };
     
     const handleEditRedirect = () => {
-        navigate(`/editar-processo/${node.id}`);
+        navigate(`/processes/manage/${node.id}`);
     };
 
     return (

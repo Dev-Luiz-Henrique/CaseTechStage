@@ -14,7 +14,7 @@ const App = () => (
                 <Route path='/areas' element={<AreasPage />} />
                 <Route path='/units' element={<UnitsPage />} />
                 <Route path='/processes' element={<ProcessesListPage />} />
-                <Route path='/processes/manage' element={<ProcessFormPage />} />
+                <Route path='/processes/manage/:id?' element={<ProcessFormPage />} />
             </Routes>
         </Layout>
     </Router>

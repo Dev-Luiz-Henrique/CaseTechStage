@@ -54,7 +54,8 @@ export const useProcess = () => {
                     ...prevProcesses,
                     createdProcess,
                 ]);
-            } catch (err) {
+                return createdProcess;
+            } catch (err) {  console.error(err)
                 setError((err as Error).message);
             }
         },
@@ -70,6 +71,7 @@ export const useProcess = () => {
                         process.id === id ? updatedProcess : process
                     )
                 );
+                return updatedProcess;
             } catch (err) {
                 setError((err as Error).message);
             }
