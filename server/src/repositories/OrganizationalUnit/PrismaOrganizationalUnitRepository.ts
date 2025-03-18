@@ -4,7 +4,7 @@ import { OrganizationalUnit } from "@/models/OrganizationalUnit";
 
 const prisma = new PrismaClient();
 
-const mapToOrganizationalUnit = (unit: PrismaOrganizationalUnit): OrganizationalUnit =>
+export const mapToOrganizationalUnit = (unit: PrismaOrganizationalUnit): OrganizationalUnit =>
     new OrganizationalUnit(
         unit.id,
         unit.name,

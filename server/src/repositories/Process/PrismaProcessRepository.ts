@@ -12,6 +12,7 @@ import {
     ProcessPriority,
     ProcessType,
 } from "@/models/Process";
+import { mapToOrganizationalUnit } from "../OrganizationalUnit/PrismaOrganizationalUnitRepository";
 
 const prisma = new PrismaClient();
 
@@ -38,8 +39,20 @@ const convertType = (type?: ProcessType): process_type | undefined => type as pr
 
 export class PrismaProcessRepository implements IProcessRepository {
     async getAll(): Promise<Process[]> {
-        const processes: PrismaProcess[] = await prisma.process.findMany();
-        return processes.map(mapToProcess);
+        const processes = await prisma.process.findMany({
+            include: { responsibles: { include: { organizationalUnit: true }, }, },
+        });
+
+        return processes.map((proc) => {
+            const enrichedProcess = mapToProcess(proc);
+
+            if (proc.responsibles) {
+                enrichedProcess.responsibles = proc.responsibles.map((r: any) =>
+                    mapToOrganizationalUnit(r.organizationalUnit)
+                );
+            }
+            return enrichedProcess;
+        });
     }
 
     async getById(id: bigint): Promise<Process | null> {

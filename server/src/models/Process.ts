@@ -1,3 +1,5 @@
+import { OrganizationalUnit } from "./OrganizationalUnit";
+
 export class Process {
     constructor(
         public id: bigint,
@@ -12,7 +14,8 @@ export class Process {
         public type?: ProcessType,
         public startDate?: Date,
         public endDate?: Date,
-        public createdAt?: Date
+        public createdAt?: Date,
+        public responsibles?: OrganizationalUnit[]
     ) {}
 
     toJSON() {
@@ -29,7 +32,8 @@ export class Process {
             type: this.type,
             startDate: this.startDate ? this.startDate.toISOString() : null,
             endDate: this.endDate ? this.endDate.toISOString() : null,
-            createdAt: this.createdAt ? this.createdAt.toISOString() : null
+            createdAt: this.createdAt ? this.createdAt.toISOString() : null,
+            responsibles: this.responsibles || null,
         };
     }
 }
