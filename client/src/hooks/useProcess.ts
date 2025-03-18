@@ -84,9 +84,12 @@ export const useProcess = () => {
         setError(null);
         try {
             await deleteProcess(id);
-            setProcesses((prevProcesses) =>
-                prevProcesses.filter((process) => process.id !== id)
-            );
+            // TODO: Otimizar essa atualizacao
+            setProcesses((prevProcesses) => {
+                const updatedProcesses = prevProcesses.filter((process) => process.id !== id);
+                setProcessTree(buildProcessTree(updatedProcesses));
+                return updatedProcesses;
+            });
         } catch (err) {
             setError(extractErrorMessage(err));
         }

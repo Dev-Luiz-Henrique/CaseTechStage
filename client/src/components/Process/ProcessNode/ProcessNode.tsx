@@ -23,6 +23,12 @@ const ProcessTreeNode = ({ node, onRemoveProcess }: ProcessTreeNodeProps) => {
         navigate(`/processes/manage/${node.id}`);
     };
 
+    const handleDelete = () => {
+        const msg = "Tem certeza que deseja remover o processo? Todos os subprocessos serão removidos.";
+        if (window.confirm(msg)) 
+            onRemoveProcess(node.id);
+    };
+
     return (
         <div className='process-tree-node'>
 
@@ -38,7 +44,7 @@ const ProcessTreeNode = ({ node, onRemoveProcess }: ProcessTreeNodeProps) => {
                 {/* Cabecalho */}
                 <ProcessTreeNodeHeader
                     onEdit={handleEditRedirect}
-                    onDelete={() => onRemoveProcess(node.id)}
+                    onDelete={handleDelete}
                     name={node.name}
                     status={node.status}
                 />
