@@ -38,7 +38,7 @@ export class Process {
     }
 }
 
-export const PROCESS_STATUS_VALUES = ["Concluido", "Em_Desenvolvimento", "Cancelado", "Planejado"] as const;
+export const PROCESS_STATUS_VALUES = ["Concluido", "Em_Andamento", "Cancelado", "Planejado"] as const;
 export type ProcessStatus = (typeof PROCESS_STATUS_VALUES)[number];
 
 export const PROCESS_PRIORITY_VALUES = ["Alta", "Media", "Baixa"] as const;
