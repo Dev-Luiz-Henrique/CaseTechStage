@@ -7,6 +7,7 @@ import {
     updateOrganizationalUnit,
     deleteOrganizationalUnit,
 } from "../services/organizationalUnitService";
+import { extractErrorMessage } from "../services/api";
 
 export const useOrganizationalUnit = () => {
     const [units, setUnits] = useState<OrganizationalUnit[]>([]);
@@ -24,7 +25,7 @@ export const useOrganizationalUnit = () => {
             const data = await getOrganizationalUnits();
             setUnits(data);
         } catch (err) {
-            setError((err as Error).message);
+            setError(extractErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -37,7 +38,7 @@ export const useOrganizationalUnit = () => {
             const data = await getOrganizationalUnitById(id);
             return data;
         } catch (err) {
-            setError((err as Error).message);
+            setError(extractErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -52,7 +53,7 @@ export const useOrganizationalUnit = () => {
                     createdOrganizationalUnit,
                 ]);
             } catch (err) {
-                setError((err as Error).message);
+                setError(extractErrorMessage(err));
             }
         },
         []
@@ -68,7 +69,7 @@ export const useOrganizationalUnit = () => {
                     )
                 );
             } catch (err) {
-                setError((err as Error).message);
+                setError(extractErrorMessage(err));
             }
         },
         []
@@ -82,7 +83,7 @@ export const useOrganizationalUnit = () => {
                 prevUnits.filter((unit) => unit.id !== id)
             );
         } catch (err) {
-            setError((err as Error).message);
+            setError(extractErrorMessage(err));
         }
     }, []);
 

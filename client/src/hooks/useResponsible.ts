@@ -6,6 +6,7 @@ import {
     assignResponsible,
     unassignResponsible,
 } from "../services/responsibleService";
+import { extractErrorMessage } from "../services/api";
 
 export const useResponsible = () => {
     const [responsibles, setResponsibles] = useState<Responsible[]>([]);
@@ -23,7 +24,7 @@ export const useResponsible = () => {
             const data = await getResponsibles();
             setResponsibles(data);
         } catch (err) {
-            setError((err as Error).message);
+            setError(extractErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -36,7 +37,7 @@ export const useResponsible = () => {
             const data = await getResponsibleByProcessAndUnit(processId, organizationalUnitId);
             return data;
         } catch (err) {
-            setError((err as Error).message);
+            setError(extractErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -49,7 +50,7 @@ export const useResponsible = () => {
                 const createdResponsible = await assignResponsible(newResponsible);
                 setResponsibles((prev) => [...prev, createdResponsible]);
             } catch (err) {
-                setError((err as Error).message);
+                setError(extractErrorMessage(err));
             }
         },
         []
@@ -67,7 +68,7 @@ export const useResponsible = () => {
                 )
             );
         } catch (err) {
-            setError((err as Error).message);
+            setError(extractErrorMessage(err));
         }
     }, []);
 

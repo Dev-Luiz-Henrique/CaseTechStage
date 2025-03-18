@@ -7,6 +7,7 @@ import {
     updateArea,
     deleteArea,
 } from "../services/areaService";
+import { extractErrorMessage } from "../services/api";
 
 export const useArea = () => {
     const [areas, setAreas] = useState<Area[]>([]);
@@ -24,7 +25,7 @@ export const useArea = () => {
             const data = await getAreas();
             setAreas(data);
         } catch (err) {
-            setError((err as Error).message);
+            setError(extractErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -37,7 +38,7 @@ export const useArea = () => {
             const data = await getAreaById(id);
             return data;
         } catch (err) {
-            setError((err as Error).message);
+            setError(extractErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -50,7 +51,7 @@ export const useArea = () => {
                 const createdArea = await createArea(newArea);
                 setAreas((prevAreas) => [...prevAreas, createdArea]);
             } catch (err) {
-                setError((err as Error).message);
+                setError(extractErrorMessage(err));
             }
         },
         []
@@ -67,7 +68,7 @@ export const useArea = () => {
                     )
                 );
             } catch (err) {
-                setError((err as Error).message);
+                setError(extractErrorMessage(err));
             }
         },
         []
@@ -79,7 +80,7 @@ export const useArea = () => {
             await deleteArea(id);
             setAreas((prevAreas) => prevAreas.filter((area) => area.id !== id));
         } catch (err) {
-            setError((err as Error).message);
+            setError(extractErrorMessage(err));
         }
     }, []);
 

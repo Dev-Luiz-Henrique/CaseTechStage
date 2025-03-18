@@ -9,12 +9,9 @@ export const api = axios.create({
     },
 });
 
-export const fetchData = async (endpoint: string, params = {}) => {
-    try {
-        const response = await api.get(endpoint, { params });
-        return response.data;
-    } catch (error) {
-        console.error(`Erro ao buscar ${endpoint}:`, error);
-        throw error;
-    }
+export const extractErrorMessage = (error: unknown): string => {
+    if (axios.isAxiosError(error))
+        return error.response?.data?.message || error.message;
+
+    return (error as Error).message;
 };

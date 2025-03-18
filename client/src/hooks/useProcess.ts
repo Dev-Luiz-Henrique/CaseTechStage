@@ -8,6 +8,7 @@ import {
     updateProcess,
     deleteProcess,
 } from "../services/processService";
+import { extractErrorMessage } from "../services/api";
 
 export const useProcess = () => {
     const [processes, setProcesses] = useState<Process[]>([]);
@@ -27,7 +28,7 @@ export const useProcess = () => {
             setProcesses(data);
             setProcessTree(buildProcessTree(data));
         } catch (err) {
-            setError((err as Error).message);
+            setError(extractErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -40,7 +41,7 @@ export const useProcess = () => {
             const data = await getProcessById(id);
             return data;
         } catch (err) {
-            setError((err as Error).message);
+            setError(extractErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -55,8 +56,8 @@ export const useProcess = () => {
                     createdProcess,
                 ]);
                 return createdProcess;
-            } catch (err) {  console.error(err)
-                setError((err as Error).message);
+            } catch (err) {
+                setError(extractErrorMessage(err));
             }
         },
         []
@@ -73,7 +74,7 @@ export const useProcess = () => {
                 );
                 return updatedProcess;
             } catch (err) {
-                setError((err as Error).message);
+                setError(extractErrorMessage(err));
             }
         },
         []
@@ -87,7 +88,7 @@ export const useProcess = () => {
                 prevProcesses.filter((process) => process.id !== id)
             );
         } catch (err) {
-            setError((err as Error).message);
+            setError(extractErrorMessage(err));
         }
     }, []);
 
