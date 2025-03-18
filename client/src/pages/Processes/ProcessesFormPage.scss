@@ -1,0 +1,28 @@
+@use "sass:color";
+@use "../../assets/styles/variables" as *;
+@use "../../assets/styles/mixins" as *;
+
+.process-form-page {
+    padding: $spacing-md;
+    background-color: $background-color;
+    border-radius: $border-radius-md;
+
+    &__title {
+        font-family: $font-primary;
+        font-size: $font-size-xxl;
+        font-weight: bold;
+        color: $onsecondary-color;
+        margin-bottom: $spacing-md;
+        text-align: center;
+    }
+
+    &__loading-text,
+    &__error-text {
+        text-align: center;
+        margin: $spacing-sm 0;
+    }
+
+    &__error-text {
+        color: $error-color;
+    }
+}
