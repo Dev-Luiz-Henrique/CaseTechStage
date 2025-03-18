@@ -48,4 +48,12 @@ export class ResponsibleService implements IResponsibleService {
         
         await this.responsibleRepository.unassign(processId, organizationalUnitId);
     }
+
+    async getByProcessAndUnit(processId: bigint, organizationalUnitId: bigint): Promise<Responsible> {
+        const responsible = await this.responsibleRepository.findByProcessAndUnit(processId, organizationalUnitId);
+        if (!responsible) 
+            throw new NotFoundError(`Relação não encontrada para o processo ${processId} e a unidade organizacional ${organizationalUnitId}.`);
+        
+        return responsible;
+    }
 }

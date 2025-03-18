@@ -22,5 +22,6 @@ const responsibleController = new ResponsibleController(responsibleService);
 router.get("/", responsibleController.getAll);
 router.post("/assign", responsibleController.assign);
 router.post("/unassign", responsibleController.unassign);
+router.get("/:processId/:organizationalUnitId", responsibleController.getByProcessAndUnit);
 
 export default router;

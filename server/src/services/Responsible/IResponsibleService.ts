@@ -7,4 +7,6 @@ export interface IResponsibleService {
     assign(processId: bigint, organizationalUnitId: bigint): Promise<Responsible>;
 
     unassign(processId: bigint, organizationalUnitId: bigint): Promise<void>;
+
+    getByProcessAndUnit(processId: bigint, organizationalUnitId: bigint): Promise<Responsible>;
 }

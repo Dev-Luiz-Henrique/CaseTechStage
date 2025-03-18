@@ -35,4 +35,16 @@ export class ResponsibleController {
             next(error);
         }
     };
+
+    getByProcessAndUnit: RequestHandler = async (req, res, next) => {
+        try {
+            const { processId, organizationalUnitId } = req.params;
+            const responsible = await this.responsibleService.getByProcessAndUnit(
+                BigInt(processId), BigInt(organizationalUnitId)
+            );
+            res.status(200).json(responsible);
+        } catch (error) {
+            next(error);
+        }
+    };
 }
