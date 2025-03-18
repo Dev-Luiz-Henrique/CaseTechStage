@@ -13,4 +13,7 @@ export interface Process {
     endDate: string | null;
     createdAt: string;
 }
-  
+
+export interface ProcessTreeNodeData extends Process {
+    children?: ProcessTreeNodeData[];
+}

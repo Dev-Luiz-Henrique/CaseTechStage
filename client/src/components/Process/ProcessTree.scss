@@ -1,0 +1,16 @@
+@use "sass:color";
+@use "../../assets/styles/variables" as *;
+@use "../../assets/styles/mixins" as *;
+
+.process-tree {
+    list-style: none;
+    padding: 0 $spacing-xl;
+    margin: 0;
+
+    &__empty {
+        text-align: center;
+        font-style: italic;
+        color: $text-color;
+        margin: $spacing-md 0;
+    }
+}

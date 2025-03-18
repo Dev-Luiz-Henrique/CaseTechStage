@@ -1,0 +1,41 @@
+@use "sass:color";
+@use "../../assets/styles/variables" as *;
+@use "../../assets/styles/mixins" as *;
+
+.process-form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    background-color: $background-color;
+    padding: $spacing-md;
+    border-radius: $border-radius-md;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    input,
+    textarea,
+    select {
+        @include input-style($border-color); // Utilizando mixin para inputs
+        padding: $spacing-sm;
+        border-radius: $border-radius-sm;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    button {
+        align-self: flex-end;
+        background-color: $secondary-color;
+        color: $onsecondary-color;
+        padding: $spacing-sm $spacing-md;
+        border: none;
+        border-radius: $border-radius-sm;
+        cursor: pointer;
+        transition: filter 0.2s;
+
+        &:hover {
+            filter: brightness(0.95);
+        }
+    }
+}

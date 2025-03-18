@@ -1,0 +1,51 @@
+@use "../../../assets/styles/variables" as *;
+@use "../../../assets/styles/mixins" as *;
+
+.process-node-body {
+    margin-top: $spacing-sm;
+    color: $text-color;
+    padding: $spacing-sm;
+
+    &__desc {
+        margin-bottom: $spacing-md;
+
+        span {
+            font-size: $font-size-lg;
+            font-weight: 500;
+            color: $primary-color;
+        }
+    }
+
+    &__info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+    }
+
+    &__item {
+        flex: 1 1 45%;
+
+        strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: $font-size-md;
+            color: $primary-color;
+        }
+
+        span {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    &__item--sub {
+        display: flex;
+        gap: $spacing-sm;
+    }
+
+    &__subitem {
+        flex: 1 1 50%;
+    }
+}

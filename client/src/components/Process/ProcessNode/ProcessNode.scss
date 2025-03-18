@@ -1,0 +1,27 @@
+@use "sass:color";
+@use "../../../assets/styles/variables" as *;
+@use "../../../assets/styles/mixins" as *;
+
+.process-tree-node {
+    margin: $spacing-sm;
+    background-color: $background-color;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-md;
+    overflow: hidden;
+
+    &__card {
+        position: relative;
+        background-color: $background-color;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: $spacing-md;
+    }
+
+    &__priority-stripe {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 20%;
+        height: 6px;
+        border-top-right-radius: $border-radius-md;
+    }
+}

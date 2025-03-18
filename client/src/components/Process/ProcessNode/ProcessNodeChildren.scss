@@ -1,0 +1,36 @@
+@use "../../../assets/styles/variables" as *;
+
+.process-node-children {
+    padding: $spacing-sm;
+    margin: 0 $spacing-md;
+    border-radius: $border-radius-sm;
+
+    &__header {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        padding: $spacing-xs 0;
+        color: $onsecondary-color;
+    }
+
+    &__icon {
+        margin-right: $spacing-xs;
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        font-size: $font-size-md;
+    }
+
+    &__title {
+        font-size: $font-size-md;
+        margin: 0;
+    }
+
+    &__content {
+        margin-top: $spacing-sm;
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-sm;
+    }
+}
