@@ -36,11 +36,8 @@ const ProcessFormPage = () => {
             ? await editProcess(id, data)
             : await addProcess(data);
 
-        // Verifica se o processo foi criado/atualizado com sucesso
-        if (!savedProcess) {
-            console.error("Processo não retornado.");
-            return;
-        }
+        if (!savedProcess)
+            throw new Error("Erro ao salvar o processo.");
 
         // Com o processo salvo, atribui os responsaveis
         data.responsibles.forEach(async (unit) => {

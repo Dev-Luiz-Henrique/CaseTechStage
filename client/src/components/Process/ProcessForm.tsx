@@ -53,7 +53,7 @@ const ProcessForm = ({
         }
     }, [initialData]);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!name.trim()) {
             alert("O nome do processo é obrigatório.");
@@ -102,22 +102,25 @@ const ProcessForm = ({
             responsibles: selectedResponsibles,
         };
 
-        onSubmit(processData);
+        try {
+            await onSubmit(processData);
 
-        // Limpa os campos se for criacao (opcional)
-        if (!initialData) {
-            setName("");
-            setDescription("");
-            setDocumentation("");
-            setTools("");
-            setAreaId("");
-            setParentId("");
-            setStatus("");
-            setPriority("");
-            setType("");
-            setStartDate("");
-            setEndDate("");
-            setResponsibles([]);
+            if (!initialData) {
+                setName("");
+                setDescription("");
+                setDocumentation("");
+                setTools("");
+                setAreaId("");
+                setParentId("");
+                setStatus("");
+                setPriority("");
+                setType("");
+                setStartDate("");
+                setEndDate("");
+                setResponsibles([]);
+            }
+        } catch (error) {
+            console.error("Erro ao submeter o formulário:", error);
         }
     };
 
