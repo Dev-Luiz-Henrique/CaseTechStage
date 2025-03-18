@@ -56,11 +56,23 @@ export class PrismaProcessRepository implements IProcessRepository {
     }
 
     async getById(id: bigint): Promise<Process | null> {
-        const proc: PrismaProcess | null = await prisma.process.findUnique({
+        const proc = await prisma.process.findUnique({
             where: { id },
+            include: { responsibles: { include: { organizationalUnit: true } } },
         });
-        return proc ? mapToProcess(proc) : null;
-    }
+        
+        if (proc) {
+            const enrichedProcess = mapToProcess(proc);
+            
+            if (proc.responsibles) {
+                enrichedProcess.responsibles = proc.responsibles.map((r: any) =>
+                    mapToOrganizationalUnit(r.organizationalUnit)
+                );
+            }
+            return enrichedProcess;
+        }
+        return null;
+    }    
 
     async create(data: {
         name: string;
