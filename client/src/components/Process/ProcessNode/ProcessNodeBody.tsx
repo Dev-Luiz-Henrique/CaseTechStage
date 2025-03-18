@@ -11,6 +11,10 @@ const ProcessNodeBody = ({ node }: ProcessNodeBodyProps) => {
         ? `${formatMonthYear(node.startDate)} - ${node.endDate ? formatMonthYear(node.endDate) : "N/A"}`
         : "N/A";
 
+    const responsiblesNames = node.responsibles?.length
+        ? node.responsibles.map(r => r.name).join(", ")
+        : "N/A";
+
     return (
         <div className='process-node-body'>
             
@@ -24,7 +28,7 @@ const ProcessNodeBody = ({ node }: ProcessNodeBodyProps) => {
                 {/* Responsaveis */}
                 <div className='process-node-body__item'>
                     <strong>Responsáveis:</strong>
-                    <span>Responsável 1, Responsável 2</span>
+                    <span>{responsiblesNames}</span>
                 </div>
 
                 <div className='process-node-body__item process-node-body__item--sub'>

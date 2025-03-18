@@ -1,3 +1,5 @@
+import { OrganizationalUnit } from "./OrganizationalUnit";
+
 export interface Process {
     id: string;
     name: string;
@@ -12,6 +14,7 @@ export interface Process {
     startDate: string;
     endDate: string | null;
     createdAt: string;
+    responsibles: OrganizationalUnit[];
 }
 
 export interface ProcessTreeNodeData extends Process {

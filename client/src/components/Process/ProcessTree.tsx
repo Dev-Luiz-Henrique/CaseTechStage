@@ -10,6 +10,8 @@ interface ProcessTreeProps {
 const ProcessTree = ({ treeData, onRemoveProcess }: ProcessTreeProps) => {
     return (
         <div className='process-tree'>
+
+            {/* Lista de processos */}
             {treeData.length > 0 ? (
                 treeData.map((node) => (
                     <ProcessTreeNode
