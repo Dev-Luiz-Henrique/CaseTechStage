@@ -6,6 +6,7 @@ import { useArea } from "../../hooks/useArea";
 import { useOrganizationalUnit } from "../../hooks/useOrganizationalUnit";
 import { useResponsible } from "../../hooks/useResponsible";
 import ProcessForm from "../../components/Process/ProcessForm";
+import "./ProcessesFormPage.scss"
 
 const ProcessFormPage = () => {
     // Pega o id da URL; se existir, é uma edição.
@@ -51,28 +52,28 @@ const ProcessFormPage = () => {
     return (
         <div className='process-form-page'>
             {/* Título */}
-            <h1>{id ? "Editar Processo" : "Criar Processo"}</h1>
+            <h1 className='process-form-page__title'>{id ? "Editar Processo" : "Criar Processo"}</h1>
 
             {/* Carregamentos */}
-            {processLoading && <p>Carregando processos...</p>}
-            {areasLoading && <p>Carregando áreas...</p>}
-            {orgUnitsLoading && <p>Carregando unidades organizacionais...</p>}
-            
+            {processLoading && <p className='process-form-page__loading-text'>Carregando processos...</p>}
+            {areasLoading && <p className='process-form-page__loading-text'>Carregando áreas...</p>}
+            {orgUnitsLoading && <p className='process-form-page__loading-text'>Carregando unidades organizacionais...</p>}
+
             {/* Erros */}
             {processError && (
-                <p className='error'>Erro ao carregar processos: {processError}</p>
+                <p className='process-form-page__error-text'>Ocorreu um erro no processo: {processError}</p>
             )}
             {areasError && (
-                <p className='error'>Erro ao carregar áreas: {areasError}</p>
+                <p className='process-form-page__error-text'>Ocorreu um erro na área: {areasError}</p>
             )}
             {orgUnitsError && (
-                <p className='error'>Erro ao carregar unidades organizacionais: {orgUnitsError}</p>
+                <p className='process-form-page__error-text'>Ocorreu um erro nas unidades organizacionais: {orgUnitsError}</p>
             )}
             {responsibleError && (
-                <p className='error'>Erro ao atribuir responsáveis: {responsibleError}</p>
+                <p className='process-form-page__error-text'>Ocorreu um erro nos responsáveis: {responsibleError}</p>
             )}
 
-            {/* Formulario */}
+            {/* Formulário */}
             <ProcessForm
                 initialData={initialData}
                 onSubmit={handleSubmit}

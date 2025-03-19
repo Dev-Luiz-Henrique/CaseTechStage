@@ -26,18 +26,25 @@ const AreaItem = ({ area, onEditArea, onRemoveArea }: AreaItemProps) => {
         <li className={`area-item ${isEditing ? "area-item--editing" : ""}`}>
             {isEditing ? (
                 <>
+                    {/* Modo de Edicao */}
+
+                    {/* Nome */}
                     <input
                         type='text'
                         value={editName}
                         onChange={(e) => setEditName(e.target.value)}
                         className='area-item__input'
                     />
+
+                    {/* Salvar */}
                     <button
                         onClick={handleSave}
                         className='area-item__button area-item__button--save'
                     >
                         <img src={SaveIcon} alt='Salvar' />
                     </button>
+
+                    {/* Cancelar */}
                     <button
                         onClick={() => setIsEditing(false)}
                         className='area-item__button area-item__button--cancel'
@@ -47,14 +54,23 @@ const AreaItem = ({ area, onEditArea, onRemoveArea }: AreaItemProps) => {
                 </>
             ) : (
                 <>
+                    {/* Modo de Exibicao */}
+
+                    {/* Nome */}
                     <span className='area-item__name'>{area.name}</span>
+
+                    {/* Botoes */}
                     <div className='area-item__actions'>
+
+                        {/* Editar */}
                         <button
                             onClick={() => setIsEditing(true)}
                             className='area-item__button area-item__button--edit'
                         >
                             <img src={EditIcon} alt='Editar' />
                         </button>
+
+                        {/* Deletar */}
                         <button
                             onClick={() => onRemoveArea(area.id)}
                             className='area-item__button area-item__button--delete'

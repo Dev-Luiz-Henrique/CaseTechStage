@@ -21,15 +21,20 @@
     }
 
     &__link {
+        display: inline-block;
         text-decoration: none;
         color: $text-color;
-        font-size: 1rem;
+        font-size: $font-size-lg;
         font-weight: 500;
-        transition: color 0.3s;
+        transition: color 0.3s, transform 0.3s;
 
         &:hover,
         &.active {
-            color: $onsecondary-color
+            color: $onsecondary-color;
+        }
+
+        &:hover {
+            transform: scale(1.1);
         }
     }
 }

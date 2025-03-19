@@ -11,18 +11,23 @@ const UnitsPage = () => {
 
     return (
         <div className='units-page'>
-            <h1 className='units-page__title'>Unidades Organizacionais</h1>
 
+            {/* Titulo */}
+            <h1 className='units-page__title'>UNIDADES ORGANIZACIONAIS</h1>
+
+            {/* Formulario de criacao */}
             <UnitForm
                 onAddUnit={(name, parentId) => addUnit({ name, parentId })}
                 departments={departments}
             />
 
+            {/* Carregando ou Erro */}
             {loading && (
                 <p className='units-page__loading-text'>Carregando...</p>
             )}
             {error && <p className='units-page__error-text'>{error}</p>}
 
+            {/* Exibicao de unidades organizacionais */}
             <UnitList
                 units={units}
                 onEditUnit={(id, name, parentId) => editUnit(id, { name, parentId })}

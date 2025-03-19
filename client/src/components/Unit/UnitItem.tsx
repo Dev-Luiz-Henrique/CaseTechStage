@@ -24,8 +24,6 @@ const UnitItem = ({ unit, onEditUnit, onRemoveUnit, departments = [] }: UnitItem
 
     const handleSave = () => {
         if (!editName.trim()) return;
-
-        // Se editParentId estiver vazio, envia undefined; caso contrário, envia o valor atual
         onEditUnit(unit.id, editName, editParentId || undefined);
         setIsEditing(false);
     };
