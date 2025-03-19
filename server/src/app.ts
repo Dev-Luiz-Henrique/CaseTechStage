@@ -5,11 +5,14 @@ import processRoutes from "@/routes/ProcessRoutes";
 import organizationalUnit from "@/routes/OrganizationalUnitRoutes";
 import responsible from "@/routes/ResponsibleRoutes";
 import errorHandler from "@/utils/errorHandler";
+import setupSwagger from "@/swaggerConfig";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+setupSwagger(app);
 
 app.use("/areas", areaRoutes);
 app.use("/processes", processRoutes);
