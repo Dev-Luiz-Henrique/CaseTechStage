@@ -9,6 +9,14 @@ Esta ferramenta tem como objetivo **mapear os processos e subprocessos de uma em
 - **Processos e Subprocessos:** Estruturados de forma hierárquica, permitindo o detalhamento e a organização dos fluxos de trabalho.
 - **Departamentos e Setores:** Definem os responsáveis e os agrupamentos que compõem os processos.
 
+## Links de Acesso
+
+- **Frontend do Site:** [case-stage-client.vercel.app](https://case-stage-client.vercel.app/)
+- **API Backend:** [case-stage-server.onrender.com](https://case-stage-server.onrender.com/)
+- **Documentação:** A documentação interativa dos endpoints (gerada com Swagger) facilita o teste e a compreensão dos serviços: [Visualizar Documentação da API](https://case-stage-server.onrender.com/api-docs/)
+
+> **Observação:** Como a API está hospedada gratuitamente, o servidor pode levar alguns segundos para "acordar" na primeira requisição (cold start). Por favor, aguarde um instante se ela não responder imediatamente.
+
 ## Arquitetura da Solução
 
 A solução é estruturada seguindo uma arquitetura cliente-servidor em três camadas, garantindo a separação de responsabilidades, facilidade de manutenção e escalabilidade::
@@ -82,14 +90,6 @@ Confira as funcionalidades e fluxos detalhados e as interações entre as entida
 - **DRY (Don't Repeat Yourself):**  Adotei a estratégia DRY para evitar a duplicação de código, promovendo a reutilização de componentes e funções tanto no front-end quanto no back-end.
 
 - **BEM (Block, Element, Modifier):** Utilizei a metodologia BEM para a nomeação e organização das classes CSS no front-end. Essa abordagem garante uma estrutura de estilos consistente, modular e de fácil manutenção, alinhada aos princípios de clareza e reutilização.
-
-## Documentação da API
-
-Para visualizar e testar os endpoints disponíveis da API REST, acesse:
- **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**
-
-A documentação interativa foi gerada com Swagger e facilita a compreensão e uso da API por desenvolvedores e integradores.
-
 
 ## Instruções de Uso
 
